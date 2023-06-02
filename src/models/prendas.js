@@ -17,6 +17,19 @@ const prendaSchema = new Schema({
         type: Number,
         require: true,
     },
+    data: {
+        type: Date,
+        default: Date.now,
+    },
+    foto_url: {
+        type: String,
+        require: true,
+    },
+    encargado: {
+        type: Schema.Types.ObjectId,
+        ref: "Usuario",
+    }
+
 })
 
 export default mongoose.model("Prenda", prendaSchema)

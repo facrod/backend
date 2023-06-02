@@ -31,9 +31,13 @@ async function getPrenda(req, res) {    //por medio de un try and catch hacemos 
 //CREA UNA PRENDA
 async function postPrenda (req,res) {
     try {
+        const {id} = req.params
         const {categoria, talle, color, stock} = req.body //destructuro el body que recibo por req del post
-        
-        const newPrenda = await prendaSchema.create({categoria, talle, color, stock}) //
+        const newPrenda = await prendaSchema.findByIdAndUpdate(id, {
+            categoria, 
+            talle, 
+            color, 
+            stock}).populate("encargado") //NO FUNCIONA 
 
         return res.json(Sucess(newPrenda)); 
     
@@ -94,4 +98,4 @@ async function deletePrenda (req, res) {
         return res.json(Error(error))
     }
 }
-export {getPrenda, postPrenda, getPrendaId, putPrenda, deletePrenda}
+export {getPrenda, postPrenda, getPrendaId, putPrenda, deletePrenda, Error, Sucess}

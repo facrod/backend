@@ -5,7 +5,7 @@ const prendasRouter = express.Router()
 
 prendasRouter.get("/prendas", getPrenda)
 prendasRouter.get("/prendas/:id", getPrendaId)
-prendasRouter.post("/prendas", postPrenda)
+prendasRouter.post("/prendas/:id", postPrenda)
 prendasRouter.put("/prendas/:id", putPrenda)
 prendasRouter.delete("/prendas/:id", deletePrenda)
 
