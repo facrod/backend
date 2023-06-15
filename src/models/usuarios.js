@@ -21,6 +21,11 @@ const usuarioSchema = new Schema ({
     repassword: {
         type: String,
         require: true,
+    },
+    loged: {
+        type: String,
+        require: true,
+        default: false,
     }
 })
 

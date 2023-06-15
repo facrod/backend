@@ -6,7 +6,7 @@ const userRoute = express.Router()
 
 userRoute.post("/register", newUser)
 userRoute.get("/registerUser", getUser)
-userRoute.post("/login",[Authenticate] ,login)
+userRoute.post("/login", login)
 userRoute.post("/loginOut", logOut)
 
 

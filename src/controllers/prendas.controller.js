@@ -1,4 +1,6 @@
 import prendaSchema from "../models/prendas";
+import usuarioSchema from "../models/usuarios"
+import { UploadPicture } from "./cloudinary.controller";
 
 //funciones para simplificar el codigo, lo qué hago acá es pasar las res.json por una función asi queda más legible y menos lineas
 function Error (e) {
@@ -32,12 +34,15 @@ async function getPrenda(req, res) {    //por medio de un try and catch hacemos 
 async function postPrenda (req,res) {
     try {
         const {id} = req.params
+        const encargadoP = await usuarioSchema.findById(id)
         const {categoria, talle, color, stock} = req.body //destructuro el body que recibo por req del post
-        const newPrenda = await prendaSchema.findByIdAndUpdate(id, {
+        const newPrenda = await prendaSchema.create({
             categoria, 
             talle, 
             color, 
-            stock}).populate("encargado") //NO FUNCIONA 
+            stock,
+            encargado: encargadoP
+        }) //NO FUNCIONA 
 
         return res.json(Sucess(newPrenda)); 
     
@@ -98,4 +103,24 @@ async function deletePrenda (req, res) {
         return res.json(Error(error))
     }
 }
-export {getPrenda, postPrenda, getPrendaId, putPrenda, deletePrenda, Error, Sucess}
+
+async function UploadPicturePrenda (req, res) {
+    try {
+        const {id} = req.params
+        const photo = req.files["file"][0]
+        const {secure_url} = await UploadPicture(photo)
+        const response = await prendaSchema.findByIdAndUpdate(id, {
+            $set: {
+                foto_url: secure_url
+            }
+        })
+        response.foto_url = secure_url
+
+        return res.json(Sucess(response))
+
+    } catch (err) {
+        return res.json(Error(err))
+    }
+}
+
+export {getPrenda, postPrenda, getPrendaId, putPrenda, deletePrenda, Error, Sucess, UploadPicturePrenda}

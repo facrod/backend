@@ -24,6 +24,7 @@ const prendaSchema = new Schema({
     foto_url: {
         type: String,
         require: true,
+        default: "prueba"
     },
     encargado: {
         type: Schema.Types.ObjectId,

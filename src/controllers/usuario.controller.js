@@ -32,7 +32,6 @@ async function newUser (req, res) {
         return res.status(200).json({
             ok: true,
             user: usuario,
-            isLogged: false
         })      
     } else {
         return res.status(400).json({
@@ -54,7 +53,11 @@ async function login (req, res) {
     if (!userLogged) {
         return res
               .status(400)
-              .json({ ok: false, error: "Usuario o Contraseña incorrectos" })}
+              .json({ 
+                ok: false, 
+                error: "Usuario o Contraseña incorrectos" 
+                
+            })}
         
     const passwordCheck = await Compare(password, userLogged.password)
 
@@ -64,14 +67,17 @@ async function login (req, res) {
             .json({ ok: false, error: "Usuario o Contraseña incorrectos" })}
 
     const token = userLogged.generateAccesToken();
-
-    const usuario = await usuarioSchema.findOne({email: userLogged.email})
-        
+    const logedT = true
+    const usuario = await usuarioSchema.findOneAndUpdate({email:userLogged.email}, {
+ 
+            loged: logedT,
+            
+    })
+    usuario.loged = logedT
     return res.json({
         ok: true,
         data: token,
         user: usuario,
-        isLogged: true
     })
 
 }
@@ -80,12 +86,15 @@ async function logOut (req, res) {
     const {authorization} = req.headers
     const tokenLG = authorization.split(" ")[1]
     const decodedT = jwt.decode(tokenLG)
-    const usuario = await usuarioSchema.findOne({nombre: decodedT.nombre})  
-
+    const usuario = await usuarioSchema.findOneAndUpdate({nombre: decodedT.nombre}, {
+        $set: {
+            loged: false,
+        }
+    })  
+    usuario.loged = false
     return res.json({
         ok:true,
         user: usuario,
-        isLogged: false,
     })
 }
 
