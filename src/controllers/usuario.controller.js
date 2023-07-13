@@ -1,5 +1,5 @@
 import usuarioSchema from "../models/usuarios";
-import { Error, Sucess } from "./prendas.controller";
+import { Error, Sucess } from "./productos.controller";
 import {Encrypt, Compare} from "../helpers/password.helpers"
 import jwt from "jsonwebtoken";
 
@@ -69,9 +69,7 @@ async function login (req, res) {
     const token = userLogged.generateAccesToken();
     const logedT = true
     const usuario = await usuarioSchema.findOneAndUpdate({email:userLogged.email}, {
- 
-            loged: logedT,
-            
+        loged: logedT,
     })
     usuario.loged = logedT
     return res.json({

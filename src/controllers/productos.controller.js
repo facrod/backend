@@ -1,4 +1,4 @@
-import prendaSchema from "../models/prendas";
+import productoSchema from "../models/productos";
 import usuarioSchema from "../models/usuarios"
 import { UploadPicture } from "./cloudinary.controller";
 
@@ -20,9 +20,9 @@ function Sucess (a) {
 }
 
 //LEE LAS PRENDAS QUE HAY 
-async function getPrenda(req, res) {    //por medio de un try and catch hacemos el código mucho más legible (async) 2) utilizams .find en prendasSchema para poder transformarlo en un array y guardarlo en una const para posteriormente mostrarlo en el return (el return sólo se pone en los try and catch ya qué en la otra forma es implicito)
+async function getProducto(req, res) {    //por medio de un try and catch hacemos el código mucho más legible (async) 2) utilizams .find en prendasSchema para poder transformarlo en un array y guardarlo en una const para posteriormente mostrarlo en el return (el return sólo se pone en los try and catch ya qué en la otra forma es implicito)
     try {
-       const prendas = await prendaSchema.find()
+       const prendas = await productoSchema.find()
        return res.json(Sucess(prendas))         
     
     } catch (error) {
@@ -31,12 +31,12 @@ async function getPrenda(req, res) {    //por medio de un try and catch hacemos 
 }
 
 //CREA UNA PRENDA
-async function postPrenda (req,res) {
+async function postProducto (req,res) { //PUEDO HACER UN AUTHENTICA YA QUÉ EL USUARIO ESTARÁ LOGEADO 
     try {
         const {id} = req.params
         const encargadoP = await usuarioSchema.findById(id)
         const {categoria, talle, color, stock} = req.body //destructuro el body que recibo por req del post
-        const newPrenda = await prendaSchema.create({
+        const newPrenda = await productoSchema.create({
             categoria, 
             talle, 
             color, 
@@ -52,11 +52,11 @@ async function postPrenda (req,res) {
 }
 
 //LEE LA PRENDA POR SU ID 
-async function getPrendaId (req, res) {
+async function getProductoId (req, res) {
     try {
     const {id} = req.params
     
-    const prendaId = await prendaSchema.findById(id)
+    const prendaId = await productoSchema.findById(id)
 
     return res.json(Sucess(prendaId))
 
@@ -67,11 +67,11 @@ async function getPrendaId (req, res) {
 }
 
 //MODIFICAR LA PRENDA 
-async function putPrenda (req, res) {
+async function putProducto (req, res) {
     try {
         const {id} = req.params
         const {categoria, talle, color, stock} = req.body
-        const prendaModificada = await prendaSchema.findByIdAndUpdate(id, {
+        const prendaModificada = await productoSchema.findByIdAndUpdate(id, {
             categoria,
             talle,
             color,
@@ -93,10 +93,10 @@ async function putPrenda (req, res) {
 }
 
 //ELIMINAR LA PRENDA
-async function deletePrenda (req, res) {
+async function deleteProducto (req, res) {
     try {
         const {id} = req.params
-        const prendaDelete = await prendaSchema.findByIdAndRemove(id)
+        const prendaDelete = await productoSchema.findByIdAndRemove(id)
         return res.json(Sucess(prendaDelete))
 
     } catch (error) {
@@ -104,12 +104,12 @@ async function deletePrenda (req, res) {
     }
 }
 
-async function UploadPicturePrenda (req, res) {
+async function UploadPictureProducto (req, res) {
     try {
         const {id} = req.params
         const photo = req.files["file"][0]
         const {secure_url} = await UploadPicture(photo)
-        const response = await prendaSchema.findByIdAndUpdate(id, {
+        const response = await productoSchema.findByIdAndUpdate(id, {
             $set: {
                 foto_url: secure_url
             }
@@ -123,4 +123,4 @@ async function UploadPicturePrenda (req, res) {
     }
 }
 
-export {getPrenda, postPrenda, getPrendaId, putPrenda, deletePrenda, Error, Sucess, UploadPicturePrenda}
+export {getProducto, postProducto, getProductoId, putProducto, deleteProducto, Error, Sucess, UploadPictureProducto}
