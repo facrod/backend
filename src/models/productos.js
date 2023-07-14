@@ -5,6 +5,14 @@ const productoSchema = new Schema({
         type: String,
         require: true,
     },
+    descripcion: {
+        type: String,
+        require: true,
+    },
+    categoria: {
+        type: String,
+        require: true
+    },
     precio: {
         type: String,
         require: true,
@@ -21,12 +29,11 @@ const productoSchema = new Schema({
         type: String,
         require: true,
         default: "prueba"
-    },
-    encargado: {
-        type: Schema.Types.ObjectId,
-        ref: "Usuario",
     }
-
 })
+//    encargado: {
+//        type: Schema.Types.ObjectId,
+//        ref: "Usuario",
+//    }
 
 export default mongoose.model("Producto", productoSchema)

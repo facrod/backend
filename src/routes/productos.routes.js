@@ -8,11 +8,11 @@ const upload = multer ({
     storage: multer.diskStorage({})
 }).fields([{name: "file", maxCount: 1}])
 
-productosRouter.get("/prendas", getProducto)
-productosRouter.get("/prendas/:id", getProductoId)
-productosRouter.post("/prendas/:id", postProducto)
-productosRouter.put("/prendas/:id", putProducto)
-productosRouter.delete("/prendas/:id", deleteProducto)
-productosRouter.put("/prendas/foto/:id",[Authenticate, upload], UploadPictureProducto)
+productosRouter.get("/productos", getProducto)
+productosRouter.get("/productos/:id", getProductoId)
+productosRouter.post("/productos", postProducto)
+productosRouter.put("/productos/:id", putProducto)
+productosRouter.delete("/productos/:id", deleteProducto)
+productosRouter.put("/productos/foto/:id",[Authenticate, upload], UploadPictureProducto)
 
 export default productosRouter

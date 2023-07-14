@@ -22,8 +22,8 @@ function Sucess (a) {
 //LEE LAS PRENDAS QUE HAY 
 async function getProducto(req, res) {    //por medio de un try and catch hacemos el código mucho más legible (async) 2) utilizams .find en prendasSchema para poder transformarlo en un array y guardarlo en una const para posteriormente mostrarlo en el return (el return sólo se pone en los try and catch ya qué en la otra forma es implicito)
     try {
-       const prendas = await productoSchema.find()
-       return res.json(Sucess(prendas))         
+       const productos = await productoSchema.find()
+       return res.json(Sucess(productos))         
     
     } catch (error) {
         return res.json(Error(error)) 
@@ -33,18 +33,19 @@ async function getProducto(req, res) {    //por medio de un try and catch hacemo
 //CREA UNA PRENDA
 async function postProducto (req,res) { //PUEDO HACER UN AUTHENTICA YA QUÉ EL USUARIO ESTARÁ LOGEADO 
     try {
-        const {id} = req.params
-        const encargadoP = await usuarioSchema.findById(id)
-        const {categoria, talle, color, stock} = req.body //destructuro el body que recibo por req del post
-        const newPrenda = await productoSchema.create({
+        //const {id} = req.params
+        //const encargadoP = await usuarioSchema.findById(id)
+        const {producto, descripcion, categoria, precio, stock} = req.body //destructuro el body que recibo por req del post
+        const newProducto = await productoSchema.create({
+            producto,
+            descripcion,
             categoria, 
-            talle, 
-            color, 
-            stock,
-            encargado: encargadoP
-        }) //NO FUNCIONA 
+            precio, 
+            stock, 
+            //encargado: encargadoP
+        }) //Intetamos hacer una vinculacion del producto con los usuarios para ver quien agrego tal cosa 
 
-        return res.json(Sucess(newPrenda)); 
+        return res.json(Sucess(newProducto)); 
     
     } catch (error) {
         return res.json(Error(error))
@@ -56,9 +57,9 @@ async function getProductoId (req, res) {
     try {
     const {id} = req.params
     
-    const prendaId = await productoSchema.findById(id)
+    const productoId = await productoSchema.findById(id)
 
-    return res.json(Sucess(prendaId))
+    return res.json(Sucess(productoId))
 
 
     } catch (error) {
@@ -70,11 +71,12 @@ async function getProductoId (req, res) {
 async function putProducto (req, res) {
     try {
         const {id} = req.params
-        const {categoria, talle, color, stock} = req.body
-        const prendaModificada = await productoSchema.findByIdAndUpdate(id, {
+        const {producto, descripcion, categoria, precio, stock} = req.body
+        const productoModificado = await productoSchema.findByIdAndUpdate(id, {
+            producto,
+            descripcion,
             categoria,
-            talle,
-            color,
+            precio,
             stock,
         })
 
@@ -82,8 +84,8 @@ async function putProducto (req, res) {
             ok: true,
             status: 200,
             data: {
-                previusPrenda: prendaModificada,
-                nexPrenda: {categoria, talle, color, stock}
+                prevProduct: productoModificado,
+                nexProduct: {producto, descripcion, categoria, precio, stock}
             }
         })
 
@@ -96,8 +98,8 @@ async function putProducto (req, res) {
 async function deleteProducto (req, res) {
     try {
         const {id} = req.params
-        const prendaDelete = await productoSchema.findByIdAndRemove(id)
-        return res.json(Sucess(prendaDelete))
+        const productoDelete = await productoSchema.findByIdAndRemove(id)
+        return res.json(Sucess(productoDelete))
 
     } catch (error) {
         return res.json(Error(error))
