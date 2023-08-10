@@ -47,7 +47,6 @@ async function newUser (req, res) {
 
 async function login (req, res) {
     const {email, password} = req.body
-
     const userLogged = await usuarioSchema.findOne({email})
 
     if (!userLogged) {

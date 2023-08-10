@@ -98,6 +98,7 @@ async function putProducto (req, res) {
 async function deleteProducto (req, res) {
     try {
         const {id} = req.params
+        console.log(id)
         const productoDelete = await productoSchema.findByIdAndRemove(id)
         return res.json(Sucess(productoDelete))
 
